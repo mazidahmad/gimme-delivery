@@ -79,7 +79,12 @@ class AppTheme {
           dividerColor: AppColors.secondaryColor,
           labelColor: AppColors.primaryColor,
           indicatorColor: AppColors.primaryColor,
-          unselectedLabelColor: AppColors.backgroundColor,
+          unselectedLabelColor: AppColors.hintTextColor,
+          indicator: BoxDecoration(
+            color: AppColors.backgroundColor,
+            borderRadius: BorderRadius.circular(50.sp),
+          ),
+          splashFactory: NoSplash.splashFactory,
         ),
 
         //------------- Text Button -------------//
