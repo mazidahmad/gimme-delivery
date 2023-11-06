@@ -6,5 +6,5 @@ class AppAssets {
   static const String onboardingHeader = '$_images/onboarding-header.jpg';
   static const String avatar = '$_images/man.jpg';
   static const String pickMarker = '$_markers/pick-marker.svg';
-  static const String merchant = '$_markers/merchant-marker.svg';
+  static const String merchant = '$_markers/merchant-marker.png';
 }

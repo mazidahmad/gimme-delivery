@@ -57,4 +57,49 @@ mixin MessagerMixin {
         ),
         gravity: ToastGravity.BOTTOM);
   }
+
+  Future<void> showAppModalBottomsheet(
+          {required BuildContext context,
+          required Widget Function(
+                  BuildContext context, void Function(void Function()) setState)
+              widget,
+          String? title}) =>
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        backgroundColor: AppColors.backgroundColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(28),
+            topRight: Radius.circular(28),
+          ),
+        ),
+        builder: (_) => StatefulBuilder(
+          builder: (context, setState) => SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Gap(12.h),
+                Container(
+                  width: 80.w,
+                  height: 3.h,
+                  decoration: BoxDecoration(
+                      color: AppColors.secondaryColor,
+                      borderRadius: BorderRadius.circular(3)),
+                ),
+                Gap(22.h),
+                if (title != null) ...[
+                  Text(
+                    title,
+                    style: AppTextStyle.headlineLarge(),
+                  ),
+                  Gap(18.h),
+                  const Divider(),
+                ],
+                widget.call(context, setState),
+              ],
+            ),
+          ),
+        ),
+      );
 }

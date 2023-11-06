@@ -662,7 +662,7 @@ packages:
     source: hosted
     version: "2.3.1"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
@@ -1195,7 +1195,7 @@ packages:
     source: hosted
     version: "2.0.2"
   turf:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: turf
       sha256: "2be48cc7ed7e9acccaeee18e06d1ce183f3f7eee7abc0622371880951d41a0d6"

@@ -5,7 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:gimme_delivery/core/di/service_locator.dart';
 import 'package:gimme_delivery/core/theme/theme.dart';
+import 'package:gimme_delivery/features/global/presentation/widget/app_secondary_textfield.dart';
+import 'package:gimme_delivery/features/global/presentation/widget/app_small_button.dart';
+import 'package:gimme_delivery/features/main/delivery/domain/entities/pickup_request.dart';
 import 'package:gimme_delivery/features/main/delivery/presentation/cubit/delivery_cubit.dart';
+import 'package:gimme_delivery/features/main/delivery/presentation/widget/merchant_list_item.dart';
 import 'package:gimme_delivery/router/app_router.dart';
 import 'package:gimme_delivery/router/app_router.gr.dart';
 import 'package:location/location.dart';
@@ -40,7 +44,20 @@ class _DeliveryPageState extends State<DeliveryPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => _cubit..getMerchants(),
+      create: (context) => _cubit
+        ..setPickUpRequest(
+          PickUpRequest(
+            senderName: '',
+            senderPhone: '',
+            locationName:
+                'Lon: ${widget.currLocation.longitude}, Lat: ${widget.currLocation.latitude}',
+            address:
+                'Lon: ${widget.currLocation.longitude}, Lat: ${widget.currLocation.latitude}',
+            longitude: widget.currLocation.longitude!,
+            latitude: widget.currLocation.latitude!,
+          ),
+        )
+        ..getMerchants(),
       child: Scaffold(
         body: BlocBuilder<DeliveryCubit, DeliveryState>(
           builder: (context, state) {
@@ -99,14 +116,16 @@ class _DeliveryPageState extends State<DeliveryPage> {
                               Expanded(
                                 child: Column(
                                   children: [
-                                    const AppSecondaryTextField(
+                                    AppSecondaryTextField(
+                                        controller: _cubit.pickPointController,
                                         hint: "Search for pick point"),
                                     Divider(
                                       height: 1,
                                       color: AppColors.hintTextColor
                                           .withOpacity(0.2),
                                     ),
-                                    const AppSecondaryTextField(
+                                    AppSecondaryTextField(
+                                        controller: _cubit.dropOffController,
                                         hint: "Search for destination point"),
                                   ],
                                 ),
@@ -116,12 +135,24 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         ),
                         Gap(20.h),
                         AppSmallButton(
-                          onTap: () => getIt<AppRouter>().push(
-                            PickUpRoute(
-                              lattitude: widget.currLocation.latitude!,
-                              longitude: widget.currLocation.longitude!,
-                            ),
-                          ),
+                          label: 'Select via map',
+                          icon: Icons.map_rounded,
+                          onTap: () async {
+                            await getIt<AppRouter>()
+                                .push(
+                              PickUpRoute(
+                                merchants: state.merchants ?? [],
+                                pickUpRequest: state.pickUpRequest!,
+                              ),
+                            )
+                                .then(
+                              (value) {
+                                if (value is PickUpRequest) {
+                                  _cubit.setPickUpRequest(value);
+                                }
+                              },
+                            );
+                          },
                         ),
                         Divider(
                           height: 40.h,
@@ -140,42 +171,9 @@ class _DeliveryPageState extends State<DeliveryPage> {
                       itemCount: state.merchants?.length ?? 0,
                       itemBuilder: (context, index) {
                         var merchant = state.merchants![index]!;
-                        return Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 14.h),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.place_rounded,
-                                    color: AppColors.primaryColor,
-                                  ),
-                                  Gap(12.w),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          merchant.merchant_name,
-                                          style: AppTextStyle.headlineSmall(),
-                                        ),
-                                        Gap(4.h),
-                                        Text(
-                                          merchant.address,
-                                          style: AppTextStyle.bodySmall(
-                                            color: AppColors.hintTextColor,
-                                          ).copyWith(height: 1.2),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Divider()
-                          ],
+                        return MerchantListItem(
+                          merchant: merchant,
+                          onTap: () {},
                         );
                       },
                     ),
@@ -184,78 +182,6 @@ class _DeliveryPageState extends State<DeliveryPage> {
               ),
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class AppSmallButton extends StatelessWidget {
-  const AppSmallButton({
-    super.key,
-    this.onTap,
-  });
-
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceColor,
-          borderRadius: BorderRadius.circular(20.sp),
-          border: Border.all(
-            color: AppColors.hintTextColor.withOpacity(0.2),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.map_rounded,
-              color: AppColors.primaryColor,
-              size: 20.sp,
-            ),
-            Gap(5.w),
-            Text(
-              'Select via map',
-              style: AppTextStyle.bodySmall().copyWith(height: 0),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AppSecondaryTextField extends StatelessWidget {
-  const AppSecondaryTextField({
-    this.hint = '',
-    this.controller,
-    super.key,
-  });
-
-  final TextEditingController? controller;
-  final String hint;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      style: AppTextStyle.bodyMedium(color: AppColors.textColor)
-          .copyWith(height: 1),
-      decoration: InputDecoration(
-        hintText: hint,
-        contentPadding: const EdgeInsets.symmetric(),
-        prefixIconColor: AppColors.hintTextColor,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintStyle: AppTextStyle.bodyMedium(color: AppColors.hintTextColor)
-            .copyWith(height: 1),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
         ),
       ),
     );
