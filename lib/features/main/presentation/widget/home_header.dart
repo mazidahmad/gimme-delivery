@@ -8,9 +8,11 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
     required this.appbar,
+    required this.name,
   });
 
   final AppBar appbar;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class HomeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello, John Doe!',
+                    'Hello, $name!',
                     style: AppTextStyle.headlineMedium(
                         color: AppColors.secondaryTextColor),
                   ),

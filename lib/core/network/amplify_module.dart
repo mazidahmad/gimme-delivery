@@ -10,6 +10,7 @@ import 'package:injectable/injectable.dart';
 @Injectable()
 class AmplifyModule {
   final AmplifyClass amplify = Amplify;
+  final APIAuthorizationType _authType = APIAuthorizationType.userPools;
 
   Future<void> configureAmplify() async {
     final ModelProvider modelProvider = ModelProvider();
@@ -23,5 +24,33 @@ class AmplifyModule {
     } catch (e) {
       throw const NetworkException('Error when initialize Amplify');
     }
+  }
+
+  Future<CognitoUserPoolTokens> _getUserToken() async {
+    var session = await amplify.Auth.fetchAuthSession();
+
+    var dataSession = session.toJson();
+
+    CognitoUserPoolTokens tokens =
+        dataSession['userPoolTokens'] as CognitoUserPoolTokens;
+    return tokens;
+  }
+
+  Future<GraphQLResponse<PaginatedResult<T>>> getListData<T extends Model>(
+      {required ModelType<T> modelType, bool isUseAuthorized = true}) async {
+    GraphQLRequest<PaginatedResult<T>> request;
+
+    if (isUseAuthorized) {
+      var tokens = await _getUserToken();
+      request = ModelQueries.list<T>(
+        modelType,
+        authorizationMode: _authType,
+        headers: {'Authorization': 'Bearer ${tokens.accessToken.raw}'},
+      );
+    } else {
+      request = ModelQueries.list<T>(modelType);
+    }
+
+    return amplify.API.mutate(request: request).response;
   }
 }
