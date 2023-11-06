@@ -11,6 +11,7 @@ class AppTextFormField extends StatelessWidget {
     this.isObscured = false,
     this.validator,
     this.label,
+    this.isReadOnly,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class AppTextFormField extends StatelessWidget {
   final bool isObscured;
   final String? Function(String?)? validator;
   final String? label;
+  final bool? isReadOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class AppTextFormField extends StatelessWidget {
             ],
           ),
         TextFormField(
+          readOnly: isReadOnly ?? false,
           validator: validator,
           controller: controller,
           obscureText: isObscured,

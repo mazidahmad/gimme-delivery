@@ -5,6 +5,7 @@ import 'package:gimme_delivery/core/theme/app_colors.dart';
 import 'package:gimme_delivery/features/global/presentation/widget/app_logo_widget.dart';
 import 'package:gimme_delivery/router/app_router.dart';
 import 'package:gimme_delivery/router/app_router.gr.dart';
+import 'package:location/location.dart';
 
 @RoutePage()
 class StartupPage extends StatefulWidget {
@@ -19,6 +20,7 @@ class StartupPage extends StatefulWidget {
 class _StartupPageState extends State<StartupPage> {
   @override
   void initState() {
+    initializeLocation();
     Future.delayed(const Duration(seconds: 2))
         .then((value) => getIt<AppRouter>().replace(const OnBoardingRoute()));
     super.initState();
@@ -27,6 +29,29 @@ class _StartupPageState extends State<StartupPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void initializeLocation() async {
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
   }
 
   @override

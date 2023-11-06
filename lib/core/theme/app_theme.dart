@@ -59,11 +59,11 @@ class AppTheme {
         //--------- Bottom Navigation Bar ----------//
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           elevation: 0,
-          selectedLabelStyle: AppTextStyle.labelNavbar(),
-          backgroundColor: AppColors.textColor.withOpacity(0.05),
+          selectedLabelStyle: AppTextStyle.headlineSmall(),
+          backgroundColor: AppColors.backgroundColor,
           selectedItemColor: AppColors.textColor,
           selectedIconTheme: const IconThemeData(
-            color: AppColors.primaryColor,
+            color: AppColors.secondaryColor,
           ),
           unselectedItemColor: AppColors.hintTextColor,
           unselectedIconTheme: const IconThemeData(

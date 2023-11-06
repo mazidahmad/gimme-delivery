@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:gimme_delivery/core/di/service_locator.dart';
 import 'package:gimme_delivery/features/global/presentation/widget/app_primary_button.dart';
 import 'package:gimme_delivery/features/global/presentation/widget/app_text_form_field.dart';
+import 'package:gimme_delivery/router/app_router.dart';
+import 'package:gimme_delivery/router/app_router.gr.dart';
 
 class SigninTabView extends StatelessWidget {
   const SigninTabView({super.key});
@@ -31,7 +34,9 @@ class SigninTabView extends StatelessWidget {
               width: double.infinity,
               child: AppPrimaryButton(
                 text: 'Sign In',
-                onPressed: () {},
+                onPressed: () {
+                  getIt<AppRouter>().replaceAll([const MainRoute()]);
+                },
               ),
             )
           ],
