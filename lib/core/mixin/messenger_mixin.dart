@@ -46,7 +46,8 @@ mixin MessagerMixin {
                 Expanded(
                   child: Text(
                     message,
-                    style: AppTextStyle.headlineSmall(),
+                    style: AppTextStyle.headlineSmall(
+                        color: AppColors.secondaryTextColor),
                     textAlign: TextAlign.start,
                   ),
                 ),

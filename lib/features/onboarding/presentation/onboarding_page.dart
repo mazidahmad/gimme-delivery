@@ -54,14 +54,15 @@ class OnBoardingPage extends StatelessWidget {
                     AppPrimaryButton(
                       width: double.infinity,
                       text: 'Create Account',
-                      onPressed: () {},
+                      onPressed: () => getIt<AppRouter>()
+                          .push(AuthenticationRoute(initialIndex: 0)),
                     ),
                     Gap(15.h),
                     AppOutlinedButton(
                       width: double.infinity,
                       text: 'Sign In',
-                      onPressed: () =>
-                          getIt<AppRouter>().push(AuthenticationRoute()),
+                      onPressed: () => getIt<AppRouter>()
+                          .push(AuthenticationRoute(initialIndex: 1)),
                     ),
                   ],
                 ),
