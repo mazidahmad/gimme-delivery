@@ -1,0 +1,21 @@
+{
+    "appName": "gimmedelivery",
+    "roleName": "pinpointLambdaRole3690f34c",
+    "cloudformationPolicyName": "cloudformationPolicy3690f34c",
+    "cloudWatchPolicyName": "cloudWatchPolicy3690f34c",
+    "pinpointPolicyName": "pinpointPolicy3690f34c",
+    "authPolicyName": "pinpoint_amplify_3690f34c",
+    "unauthPolicyName": "pinpoint_amplify_3690f34c",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

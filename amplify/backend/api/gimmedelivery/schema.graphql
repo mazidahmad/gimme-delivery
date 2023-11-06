@@ -1,0 +1,44 @@
+type DropOffModel @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  receiver_name: String!
+  receiver_phone: String!
+  location_name: String!
+  address: String!
+  longitude: Float
+  latitude: Float!
+  notes: String
+}
+
+type PickUpModel @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  sender_name: String!
+  sender_phone: String!
+  location_name: String!
+  address: String!
+  longitude: Float!
+  latitude: Float!
+  notes: String
+}
+
+type DeliveryModel @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  distance: Float!
+  PickUpModel: PickUpModel @hasOne
+  est_delivery_time: Int
+  DropOffModel: DropOffModel @hasOne
+  status: String!
+}
+
+type UserLocationModel @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  longitude: Float!
+  latitude: Float!
+}
+
+type MerchantModel @model @auth(rules: [{allow: public, operations: [read]}]) {
+  id: ID!
+  merchant_name: String!
+  address: String!
+  longitude: Float!
+  latitude: Float!
+}

@@ -17,6 +17,7 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          initial: true,
           page: StartupRoute.page,
           path: StartupPage.routeName,
         ),
@@ -33,7 +34,6 @@ class AppRouter extends $AppRouter {
           path: VerificationPage.routeName,
         ),
         AutoRoute(
-          initial: true,
           page: MainRoute.page,
           path: MainPage.routeName,
         ),
