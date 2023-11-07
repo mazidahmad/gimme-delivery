@@ -51,7 +51,25 @@ class AmplifyModule {
       request = ModelQueries.list<T>(modelType);
     }
 
-    return amplify.API.mutate(request: request).response;
+    return amplify.API.query(request: request).response;
+  }
+
+  Future<GraphQLResponse<String>> getListQueryData(
+      {required String query, bool isUseAuthorized = true}) async {
+    GraphQLRequest<String> queryRequest;
+
+    if (isUseAuthorized) {
+      var tokens = await _getUserToken();
+      queryRequest = GraphQLRequest(
+        document: query,
+        authorizationMode: _authType,
+        headers: {'Authorization': 'Bearer ${tokens.accessToken.raw}'},
+      );
+    } else {
+      queryRequest = GraphQLRequest(document: query);
+    }
+
+    return amplify.API.query(request: queryRequest).response;
   }
 
   Future<GraphQLResponse<T>> create<T extends Model>({required T model}) async {

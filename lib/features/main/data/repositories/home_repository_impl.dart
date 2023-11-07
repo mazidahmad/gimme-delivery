@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:gimme_delivery/core/di/service_locator.dart';
 import 'package:gimme_delivery/core/error/failures.dart';
 import 'package:gimme_delivery/core/mixin/repository_mixin.dart';
+import 'package:gimme_delivery/features/global/data/models/delivery_model.dart';
 import 'package:gimme_delivery/features/main/data/datasources/home_remote_datasource.dart';
 import 'package:gimme_delivery/features/main/domain/repositories/home_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -13,4 +14,8 @@ class HomeRepositoryImpl extends HomeRepository with RepositoryMixin {
   @override
   Future<Either<Failure, String>> getFullNameUser() =>
       callDataSource(() => _remoteDatasource.getFullNameUser());
+
+  @override
+  Future<Either<Failure, List<DeliveryModel?>?>> getDeliveries() =>
+      callDataSource(() => _remoteDatasource.getDeliveries());
 }

@@ -242,17 +242,17 @@ class DeliveryModel extends amplify_core.Model {
   DeliveryModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         _distance = (json['distance'] as num?)?.toDouble(),
-        _pickUpModel = json['PickUpModel']?['serializedData'] != null
-            ? PickUpModel.fromJson(new Map<String, dynamic>.from(
-                json['PickUpModel']['serializedData']))
+        _pickUpModel = json['PickUpModel'] != null
+            ? PickUpModel.fromJson(
+                new Map<String, dynamic>.from(json['PickUpModel']))
             : null,
         _est_delivery_time = json['est_delivery_time'] != null
             ? amplify_core.TemporalDateTime.fromString(
                 json['est_delivery_time'])
             : null,
-        _dropOffModel = json['DropOffModel']?['serializedData'] != null
-            ? DropOffModel.fromJson(new Map<String, dynamic>.from(
-                json['DropOffModel']['serializedData']))
+        _dropOffModel = json['DropOffModel'] != null
+            ? DropOffModel.fromJson(
+                new Map<String, dynamic>.from(json['DropOffModel']))
             : null,
         _status = json['status'],
         _createdAt = json['createdAt'] != null

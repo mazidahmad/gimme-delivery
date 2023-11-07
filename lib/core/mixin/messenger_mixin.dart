@@ -40,7 +40,7 @@ mixin MessagerMixin {
                 Icon(
                   Icons.info_outline_rounded,
                   size: 26.sp,
-                  color: AppColors.textColor,
+                  color: AppColors.secondaryTextColor,
                 ),
                 Gap(12.w),
                 Expanded(
