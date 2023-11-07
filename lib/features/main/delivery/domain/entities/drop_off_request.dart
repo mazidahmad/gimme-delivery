@@ -11,7 +11,7 @@ class DropOffRequest extends BaseLocation {
     required super.address,
     required super.longitude,
     required super.latitude,
-    required super.notes,
+    super.notes,
   });
 
   @override

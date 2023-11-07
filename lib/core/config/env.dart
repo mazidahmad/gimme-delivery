@@ -6,4 +6,6 @@ part 'env.g.dart';
 abstract class Env {
   @EnviedField(varName: 'MAPBOX_TOKEN')
   static const String mapBoxToken = _Env.mapBoxToken;
+  @EnviedField(varName: 'MAPBOX_API')
+  static const String mapBoxApi = _Env.mapBoxApi;
 }

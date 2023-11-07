@@ -5,8 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:gimme_delivery/core/di/service_locator.dart';
 import 'package:gimme_delivery/core/theme/theme.dart';
+import 'package:gimme_delivery/features/global/presentation/widget/app_primary_button.dart';
 import 'package:gimme_delivery/features/global/presentation/widget/app_secondary_textfield.dart';
 import 'package:gimme_delivery/features/global/presentation/widget/app_small_button.dart';
+import 'package:gimme_delivery/features/main/delivery/domain/entities/drop_off_request.dart';
 import 'package:gimme_delivery/features/main/delivery/domain/entities/pickup_request.dart';
 import 'package:gimme_delivery/features/main/delivery/presentation/cubit/delivery_cubit.dart';
 import 'package:gimme_delivery/features/main/delivery/presentation/widget/merchant_list_item.dart';
@@ -49,10 +51,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
           PickUpRequest(
             senderName: '',
             senderPhone: '',
-            locationName:
-                'Lon: ${widget.currLocation.longitude}, Lat: ${widget.currLocation.latitude}',
-            address:
-                'Lon: ${widget.currLocation.longitude}, Lat: ${widget.currLocation.latitude}',
+            locationName: '',
+            address: '',
             longitude: widget.currLocation.longitude!,
             latitude: widget.currLocation.latitude!,
           ),
@@ -118,6 +118,24 @@ class _DeliveryPageState extends State<DeliveryPage> {
                                   children: [
                                     AppSecondaryTextField(
                                         controller: _cubit.pickPointController,
+                                        onTap: () async {
+                                          await getIt<AppRouter>()
+                                              .push(
+                                            PickUpRoute(
+                                              merchants: state.merchants ?? [],
+                                              pickUpRequest:
+                                                  state.pickUpRequest!,
+                                            ),
+                                          )
+                                              .then(
+                                            (value) {
+                                              if (value is PickUpRequest) {
+                                                _cubit.setPickUpRequest(value);
+                                              }
+                                            },
+                                          );
+                                        },
+                                        isReadOnly: true,
                                         hint: "Search for pick point"),
                                     Divider(
                                       height: 1,
@@ -126,6 +144,36 @@ class _DeliveryPageState extends State<DeliveryPage> {
                                     ),
                                     AppSecondaryTextField(
                                         controller: _cubit.dropOffController,
+                                        onTap: () async {
+                                          await getIt<AppRouter>()
+                                              .push(
+                                            DropOffRoute(
+                                              merchants: state.merchants ?? [],
+                                              dropOffRequest:
+                                                  state.dropOffRequest ??
+                                                      DropOffRequest(
+                                                        receiverName: '',
+                                                        receiverPhone: '',
+                                                        locationName: '-',
+                                                        address: '-',
+                                                        longitude: state
+                                                            .pickUpRequest!
+                                                            .longitude,
+                                                        latitude: state
+                                                            .pickUpRequest!
+                                                            .latitude,
+                                                      ),
+                                            ),
+                                          )
+                                              .then(
+                                            (value) {
+                                              if (value is DropOffRequest) {
+                                                _cubit.setDropOffRequest(value);
+                                              }
+                                            },
+                                          );
+                                        },
+                                        isReadOnly: true,
                                         hint: "Search for destination point"),
                                   ],
                                 ),
@@ -177,7 +225,26 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         );
                       },
                     ),
-                  )
+                  ),
+                  if (state.pickUpRequest != null &&
+                      state.dropOffRequest != null)
+                    Column(
+                      children: [
+                        Gap(20.h),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 14.w),
+                          width: double.infinity,
+                          child: AppPrimaryButton(
+                            onPressed: () {
+                              getIt<AppRouter>().push(
+                                DeliveryCheckoutRoute(cubit: _cubit),
+                              );
+                            },
+                            text: 'Next',
+                          ),
+                        ),
+                      ],
+                    )
                 ],
               ),
             );

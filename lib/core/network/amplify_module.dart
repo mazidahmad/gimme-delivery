@@ -53,4 +53,15 @@ class AmplifyModule {
 
     return amplify.API.mutate(request: request).response;
   }
+
+  Future<GraphQLResponse<T>> create<T extends Model>({required T model}) async {
+    GraphQLRequest<T> request;
+    var tokens = await _getUserToken();
+    request = ModelMutations.create(
+      model,
+      authorizationMode: _authType,
+      headers: {'Authorization': 'Bearer ${tokens.accessToken.raw}'},
+    );
+    return amplify.API.mutate(request: request).response;
+  }
 }

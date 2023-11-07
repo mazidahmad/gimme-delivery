@@ -37,6 +37,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.4.1
   http: ^1.1.0
   turf: ^0.0.8
+  dio: ^5.3.3
 
 dev_dependencies:
   flutter_test:

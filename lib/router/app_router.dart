@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:gimme_delivery/features/authentication/presentation/authentication_page.dart';
 import 'package:gimme_delivery/features/authentication/presentation/verification_page.dart';
+import 'package:gimme_delivery/features/main/delivery/presentation/delivery_checkout_page.dart';
 import 'package:gimme_delivery/features/main/delivery/presentation/delivery_page.dart';
 import 'package:gimme_delivery/features/main/delivery/presentation/drop_off_page.dart';
 import 'package:gimme_delivery/features/main/delivery/presentation/pick_up_page.dart';
@@ -48,6 +49,10 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: DropOffRoute.page,
           path: DropOffPage.routeName,
+        ),
+        AutoRoute(
+          page: DeliveryCheckoutRoute.page,
+          path: DeliveryCheckoutPage.routeName,
         )
       ];
 }

@@ -24,7 +24,7 @@ type DeliveryModel @model @auth(rules: [{allow: owner}]) {
   id: ID!
   distance: Float!
   PickUpModel: PickUpModel @hasOne
-  est_delivery_time: Int
+  est_delivery_time: AWSDateTime
   DropOffModel: DropOffModel @hasOne
   status: String!
 }
@@ -42,3 +42,4 @@ type MerchantModel @model @auth(rules: [{allow: public, operations: [read]}]) {
   longitude: Float!
   latitude: Float!
 }
+ 

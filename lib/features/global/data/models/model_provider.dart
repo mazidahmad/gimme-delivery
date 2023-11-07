@@ -34,7 +34,7 @@ export 'user_location_model.dart';
 
 class ModelProvider implements amplify_core.ModelProviderInterface {
   @override
-  String version = "5e58568eaacb612c342e33e050f6000b";
+  String version = "91ae25e2fecbf5a35f9e805d0c56aa8e";
   @override
   List<amplify_core.ModelSchema> modelSchemas = [
     DeliveryModel.schema,

@@ -6,33 +6,34 @@ import 'package:gimme_delivery/core/error/failures.dart';
 import 'package:gimme_delivery/core/extensions/mapbox_extensions.dart';
 import 'package:gimme_delivery/core/theme/app_assets.dart';
 import 'package:gimme_delivery/features/global/data/models/model_provider.dart';
-import 'package:gimme_delivery/features/main/delivery/domain/entities/pickup_request.dart';
+import 'package:gimme_delivery/features/main/delivery/domain/entities/drop_off_request.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:pinput/pinput.dart';
 
-part 'pick_up_state.dart';
+part 'drop_off_state.dart';
 
 @Injectable()
-class PickUpCubit extends Cubit<PickUpState> {
-  PickUpCubit() : super(const PickUpState(status: PickUpStateStatus.initial));
+class DropOffCubit extends Cubit<DropOffState> {
+  DropOffCubit()
+      : super(const DropOffState(status: DropOffStateStatus.initial));
 
   List<MerchantModel?> _merchants = [];
   MapboxMap? _mapBox;
   PointAnnotationManager? pointAnnotationManager;
 
-  final GlobalKey<FormState> pickupForm = GlobalKey<FormState>();
+  final GlobalKey<FormState> dropOffForm = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController notesController = TextEditingController();
 
   void initialize(
-      List<MerchantModel?> merchants, PickUpRequest? pickUpRequest) {
+      List<MerchantModel?> merchants, DropOffRequest? dropOffRequest) {
     _merchants = merchants;
-    nameController.setText(pickUpRequest?.senderName ?? '');
-    phoneController.setText(pickUpRequest?.senderPhone ?? '');
-    notesController.setText(pickUpRequest?.notes ?? '');
-    emit(state.copyWith(pickUpRequest: pickUpRequest));
+    nameController.setText(dropOffRequest?.receiverName ?? '');
+    phoneController.setText(dropOffRequest?.receiverPhone ?? '');
+    notesController.setText(dropOffRequest?.notes ?? '');
+    emit(state.copyWith(dropOffRequest: dropOffRequest));
   }
 
   void onMapCreated(MapboxMap mapbox) async {
@@ -55,10 +56,10 @@ class PickUpCubit extends Cubit<PickUpState> {
       await pointAnnotationManager?.addAnnotation(imageData, data);
     }
 
-    emit(state.copyWith(status: PickUpStateStatus.mapCreated));
+    emit(state.copyWith(status: DropOffStateStatus.mapCreated));
   }
 
-  void setPickUpRequest(PointAnnotation annotation) async {
+  void setDropOffRequest(PointAnnotation annotation) async {
     if (annotation.geometry != null) {
       Point point = Point.fromJson((annotation.geometry)!.cast());
       setCameraPosition(Position(point.coordinates.lng, point.coordinates.lat));
@@ -67,7 +68,7 @@ class PickUpCubit extends Cubit<PickUpState> {
           element?.longitude == point.coordinates.lng)!;
       emit(
         state.copyWith(
-          pickUpRequest: state.pickUpRequest?.copyWith(
+          dropOffRequest: state.dropOffRequest?.copyWith(
             locationName: merchant.merchant_name,
             address: merchant.address,
             latitude: merchant.latitude,
@@ -88,13 +89,13 @@ class PickUpCubit extends Cubit<PickUpState> {
     );
   }
 
-  void submitPickUpRequest() {
+  void submitDropOffRequest() {
     emit(
       state.copyWith(
-        status: PickUpStateStatus.done,
-        pickUpRequest: state.pickUpRequest?.copyWith(
-          senderName: nameController.text,
-          senderPhone: phoneController.text,
+        status: DropOffStateStatus.done,
+        dropOffRequest: state.dropOffRequest?.copyWith(
+          receiverName: nameController.text,
+          receiverPhone: phoneController.text,
           notes: notesController.text,
         ),
       ),

@@ -28,7 +28,7 @@ class DeliveryModel extends amplify_core.Model {
   final String id;
   final double? _distance;
   final PickUpModel? _pickUpModel;
-  final int? _est_delivery_time;
+  final amplify_core.TemporalDateTime? _est_delivery_time;
   final DropOffModel? _dropOffModel;
   final String? _status;
   final amplify_core.TemporalDateTime? _createdAt;
@@ -65,7 +65,7 @@ class DeliveryModel extends amplify_core.Model {
     return _pickUpModel;
   }
 
-  int? get est_delivery_time {
+  amplify_core.TemporalDateTime? get est_delivery_time {
     return _est_delivery_time;
   }
 
@@ -127,7 +127,7 @@ class DeliveryModel extends amplify_core.Model {
       {String? id,
       required double distance,
       PickUpModel? pickUpModel,
-      int? est_delivery_time,
+      amplify_core.TemporalDateTime? est_delivery_time,
       DropOffModel? dropOffModel,
       required String status,
       String? deliveryModelPickUpModelId,
@@ -174,7 +174,7 @@ class DeliveryModel extends amplify_core.Model {
         (_distance != null ? _distance!.toString() : "null") +
         ", ");
     buffer.write("est_delivery_time=" +
-        (_est_delivery_time != null ? _est_delivery_time!.toString() : "null") +
+        (_est_delivery_time != null ? _est_delivery_time!.format() : "null") +
         ", ");
     buffer.write("status=" + "$_status" + ", ");
     buffer.write("createdAt=" +
@@ -195,7 +195,7 @@ class DeliveryModel extends amplify_core.Model {
   DeliveryModel copyWith(
       {double? distance,
       PickUpModel? pickUpModel,
-      int? est_delivery_time,
+      amplify_core.TemporalDateTime? est_delivery_time,
       DropOffModel? dropOffModel,
       String? status,
       String? deliveryModelPickUpModelId,
@@ -216,7 +216,7 @@ class DeliveryModel extends amplify_core.Model {
   DeliveryModel copyWithModelFieldValues(
       {ModelFieldValue<double>? distance,
       ModelFieldValue<PickUpModel?>? pickUpModel,
-      ModelFieldValue<int?>? est_delivery_time,
+      ModelFieldValue<amplify_core.TemporalDateTime?>? est_delivery_time,
       ModelFieldValue<DropOffModel?>? dropOffModel,
       ModelFieldValue<String>? status,
       ModelFieldValue<String?>? deliveryModelPickUpModelId,
@@ -246,7 +246,10 @@ class DeliveryModel extends amplify_core.Model {
             ? PickUpModel.fromJson(new Map<String, dynamic>.from(
                 json['PickUpModel']['serializedData']))
             : null,
-        _est_delivery_time = (json['est_delivery_time'] as num?)?.toInt(),
+        _est_delivery_time = json['est_delivery_time'] != null
+            ? amplify_core.TemporalDateTime.fromString(
+                json['est_delivery_time'])
+            : null,
         _dropOffModel = json['DropOffModel']?['serializedData'] != null
             ? DropOffModel.fromJson(new Map<String, dynamic>.from(
                 json['DropOffModel']['serializedData']))
@@ -265,7 +268,7 @@ class DeliveryModel extends amplify_core.Model {
         'id': id,
         'distance': _distance,
         'PickUpModel': _pickUpModel?.toJson(),
-        'est_delivery_time': _est_delivery_time,
+        'est_delivery_time': _est_delivery_time?.format(),
         'DropOffModel': _dropOffModel?.toJson(),
         'status': _status,
         'createdAt': _createdAt?.format(),
@@ -345,8 +348,8 @@ class DeliveryModel extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
         key: DeliveryModel.EST_DELIVERY_TIME,
         isRequired: false,
-        ofType:
-            amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)));
+        ofType: amplify_core.ModelFieldType(
+            amplify_core.ModelFieldTypeEnum.dateTime)));
 
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
         key: DeliveryModel.DROPOFFMODEL,
