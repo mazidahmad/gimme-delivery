@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:gimme_delivery/core/di/service_locator.dart';
 import 'package:gimme_delivery/core/network/amplify_module.dart';
@@ -67,6 +68,7 @@ class HomeRemoteDatasourceImpl extends HomeRemoteDatasource {
           }
         ''');
 
+    log(response.data!);
     var json = jsonDecode(response.data!);
     List<DeliveryModel> deliveries =
         List.of(json['listDeliveryModels']['items'])
