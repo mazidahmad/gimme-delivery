@@ -133,7 +133,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                       Column(
                         children: [
-                          Gap(180.h),
+                          Gap(_appBar.preferredSize.height + 120.h),
                           Padding(
                             padding: EdgeInsets.all(24.sp),
                             child: Container(

@@ -91,7 +91,8 @@ class _DropOffBottomsheetWidgetState extends State<DropOffBottomsheetWidget>
                           }
                         },
                       ),
-                    )
+                    ),
+                    Gap(40.h),
                   ],
                 ),
               ),

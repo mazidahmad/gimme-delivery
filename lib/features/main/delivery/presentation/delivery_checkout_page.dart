@@ -52,7 +52,7 @@ class _DeliveryCheckoutPageState extends State<DeliveryCheckoutPage>
           if (state.status == DeliveryStateStatus.requested) {
             showAppToast(
                 message: 'Delivery Requested', type: ToastType.success);
-            getIt<AppRouter>().replaceAll([const MainRoute()]);
+            getIt<AppRouter>().popUntilRouteWithName(MainRoute.name);
           }
         }
       },

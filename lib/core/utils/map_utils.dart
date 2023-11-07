@@ -6,6 +6,6 @@ class MapUtil {
 
   static String calculateDuration(double? value) {
     if (value == null) return '-';
-    return (value / 100).toStringAsFixed(2);
+    return (value / 60).toStringAsFixed(2);
   }
 }

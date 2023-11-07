@@ -42,7 +42,8 @@ class MainCubit extends Cubit<MainState> {
         (failure) => state.copyWith(failure: failure),
         (data) {
           return state.copyWith(
-              status: MainStateStatus.loaded, deliveries: data);
+              status: MainStateStatus.loaded,
+              deliveries: data?.reversed.toList());
         },
       ),
     );

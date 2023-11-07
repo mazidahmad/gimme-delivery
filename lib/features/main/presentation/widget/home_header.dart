@@ -23,7 +23,7 @@ class HomeHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Gap(appbar.preferredSize.height),
+          Gap(appbar.preferredSize.height - 10.h),
           RichText(
             text: TextSpan(
               text: 'GIMME',

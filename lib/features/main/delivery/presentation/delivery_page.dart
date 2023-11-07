@@ -243,6 +243,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                             text: 'Next',
                           ),
                         ),
+                        Gap(20.h),
                       ],
                     )
                 ],

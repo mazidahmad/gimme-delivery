@@ -63,7 +63,7 @@ class DeliveryRemoteDatasourceImpl extends DeliveryRemoteDatasource {
     var dropOffResponse = await _ampModule.create(model: dropOffModel);
 
     var estDeliveryTime =
-        '${DateTime.now().add(Duration(minutes: delivery.deliveryData.duration.toInt())).toIso8601String()}Z';
+        '${DateTime.now().add(Duration(minutes: delivery.deliveryData.duration ~/ 60)).toIso8601String()}Z';
 
     DeliveryModel deliveryModel = DeliveryModel(
       distance: delivery.deliveryData.distance,

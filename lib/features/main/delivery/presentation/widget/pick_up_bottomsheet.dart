@@ -91,7 +91,8 @@ class _PickUpBottomsheetWidgetState extends State<PickUpBottomsheetWidget>
                           }
                         },
                       ),
-                    )
+                    ),
+                    Gap(40.h),
                   ],
                 ),
               ),
